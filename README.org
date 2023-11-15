@@ -1,0 +1,5 @@
+Small grep clone in Rust. Based on the [[https://rust-cli.github.io/book/index.html][Command Line Applications in Rust]].
+
+#+begin_src shell
+  cargo run -- --help
+#+end_src
