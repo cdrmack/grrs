@@ -18,12 +18,10 @@ fn main() {
     let file = std::fs::File::open(&args.file).expect("could not open file");
     let reader = std::io::BufReader::new(file);
 
-    for line in reader.lines() {
-	match line {
-	    Ok(text) => if text.contains(&args.pattern) {
-		println!("{}", text);
-	    },
-	    Err(e) => panic!("could not read line: {:?}", e),
+    for line_result in reader.lines() {
+	let line = line_result.unwrap();
+	if line.contains(&args.pattern) {
+	    println!("{}", line);
 	}
     }
 }
