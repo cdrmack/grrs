@@ -13,15 +13,17 @@ struct Cli {
     file: std::path::PathBuf,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
-    let file = std::fs::File::open(&args.file).expect("could not open file");
+    let file = std::fs::File::open(&args.file)?;
     let reader = std::io::BufReader::new(file);
 
     for line_result in reader.lines() {
-	let line = line_result.unwrap();
+	let line = line_result?;
 	if line.contains(&args.pattern) {
 	    println!("{}", line);
 	}
     }
+
+    Ok(())
 }
