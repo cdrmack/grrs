@@ -6,20 +6,21 @@ use clap::Parser;
 #[derive(Parser)]
 struct Cli {
     /// The pattern to look for
-    #[arg(short, long)]
     pattern: String,
     /// The path to the file to read
-    #[arg(short, long)]
-    file: std::path::PathBuf,
+    path: std::path::PathBuf,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[derive(Debug)]
+struct CustomError(String);
+
+fn main() -> Result<(), CustomError> {
     let args = Cli::parse();
-    let file = std::fs::File::open(&args.file)?;
+    let file = std::fs::File::open(&args.path).map_err(|err| CustomError(format!("Error reading path `{}`: {}", args.path.display(), err)))?;
     let reader = std::io::BufReader::new(file);
 
     for line_result in reader.lines() {
-	let line = line_result?;
+	let line = line_result.map_err(|err| CustomError(format!("Error reading line {}", err)))?;
 	if line.contains(&args.pattern) {
 	    println!("{}", line);
 	}
