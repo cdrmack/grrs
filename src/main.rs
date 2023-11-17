@@ -1,5 +1,5 @@
 use clap::Parser;
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, anyhow};
 
 /// Search for a pattern in a file and display the lines that contain it
 #[derive(Parser)]
@@ -12,6 +12,11 @@ struct Cli {
 
 fn main() -> Result<()> {
     let args = Cli::parse();
+
+    if args.pattern.is_empty() {
+	return Err(anyhow!("pattern cannot be empty"));
+    }
+
     let file = std::fs::File::open(&args.path).with_context(|| format!("could not open file `{}`:", &args.path.display()))?;
     let reader = std::io::BufReader::new(file);
 
