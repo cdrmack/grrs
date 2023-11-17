@@ -1,7 +1,12 @@
 [package]
 name = "grrs"
 version = "0.1.0"
-edition = "2021"
+authors = ["cdrmack <git.pynvt@passmail.net>"]
+license = "MIT"
+description = "Small grep clone."
+readme = "README.org"
+keywords = ["cli", "search", "grep"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
