@@ -1,5 +1,3 @@
-use std::io::BufRead;
-
 use clap::Parser;
 use anyhow::{Context, Result};
 
@@ -17,12 +15,5 @@ fn main() -> Result<()> {
     let file = std::fs::File::open(&args.path).with_context(|| format!("could not open file `{}`:", &args.path.display()))?;
     let reader = std::io::BufReader::new(file);
 
-    for line_result in reader.lines() {
-	let line = line_result.with_context(|| format!("could not read line"))?;
-	if line.contains(&args.pattern) {
-	    println!("{}", line);
-	}
-    }
-
-    Ok(())
+    grrs::find_matches(&args.pattern, reader, &mut std::io::stdout())
 }
